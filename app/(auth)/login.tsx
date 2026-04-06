@@ -3,9 +3,11 @@ import Octicons from "@expo/vector-icons/Octicons";
 import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
 
+import { signIn } from "@/api/auth";
 import { Button, ControlledTextInput, Text } from "@/components/ui";
 import { IconSymbol } from "@/components/ui/icon-symbol.ios";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 type FormValues = {
     email: string;
@@ -16,14 +18,14 @@ export default function LoginScreen() {
     const { control, handleSubmit } = useForm();
 
     const router = useRouter();
+    const dispatch = useDispatch();
 
-    const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
-
-    // const handleLogin = async () => {
-    //     const { error } = await signIn(email, password);
-
-    //     if (error) alert(error.message);
-    // };
+    const onSubmit: SubmitHandler<FormValues> = async ({ email, password }) => {
+        const { status, data } = await signIn(email, password);
+        if (status === 200) {
+            dispatch({ type: "user/setUser", payload: data });
+        }
+    };
 
     return (
         <View

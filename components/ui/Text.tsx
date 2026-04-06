@@ -71,6 +71,11 @@ const variantStyles = StyleSheet.create({
         fontWeight: "600",
         lineHeight: 42,
     },
+    header2: {
+        fontSize: 28,
+        fontWeight: "600",
+        lineHeight: 34,
+    },
     body1: {
         fontSize: 14,
         fontWeight: "400",

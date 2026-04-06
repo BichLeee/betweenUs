@@ -1,15 +1,17 @@
+import { signUp } from "@/api/auth";
 import { Button, ControlledTextInput, Text } from "@/components/ui";
 import { IconSymbol } from "@/components/ui/icon-symbol.ios";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Octicons from "@expo/vector-icons/Octicons";
 import { useRouter } from "expo-router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
 
 type FormValues = {
     email: string;
     password: string;
     username: string;
+    name: string;
     confirmPassword: string;
 };
 
@@ -19,29 +21,20 @@ export default function LoginScreen() {
     const router = useRouter();
 
     const handleSignup: SubmitHandler<FormValues> = async (data) => {
-        // const { error } = await signUp(email, password);
-
-        // if (error) alert(error.message);
-        console.log(data);
+        if (data.password === data.confirmPassword) {
+            const res = await signUp(data.email, data.password, data.username, data.name);
+            console.log(res);
+            if (res.error) alert(res.error.message);
+            else {
+                router.replace("/login");
+                alert("Account created, please login.");
+            }
+        } else {
+            alert("Confirm password is incorrect !");
+        }
     };
 
     return (
-        // <View style={{ padding: 20 }}>
-        //   <Text>Sign Up</Text>
-        //   <TextInput
-        //     placeholder="Email"
-        //     autoCapitalize="none"
-        //     onChangeText={setEmail}
-        //   />
-        //   <TextInput
-        //     placeholder="Password"
-        //     secureTextEntry
-        //     onChangeText={setPassword}
-        //   />
-
-        //   <Button title="Sign Up" onPress={handleSignup} />
-        //   <Button title="Login" onPress={() => router.replace("/login")} />
-        // </View>
         <View
             style={{
                 padding: 20,
@@ -58,46 +51,69 @@ export default function LoginScreen() {
                 Create account
             </Text>
             <View>
-                <Text accessibilityLabel="Username" align="center" variant="label1" color="#878787" bottom={8}>
-                    Username
-                </Text>
-                <ControlledTextInput
-                    name="username"
-                    placeholder="user1234"
-                    autoCapitalize="none"
-                    control={control}
-                    variant="primary"
-                />
-                <Text accessibilityLabel="Email" align="center" variant="label1" color="#878787" top={20} bottom={8}>
-                    Email
-                </Text>
-                <ControlledTextInput
-                    name="email"
-                    control={control}
-                    placeholder="abc@gmail.com"
-                    autoCapitalize="none"
-                    variant="primary"
-                />
-                <Text accessibilityLabel="Password" align="center" variant="label1" color="#878787" top={20} bottom={8}>
-                    Password
-                </Text>
-                <ControlledTextInput
-                    name="password"
-                    placeholder="Your password"
-                    secureTextEntry
-                    control={control}
-                    variant="primary"
-                />
-                <Text accessibilityLabel="Password" align="center" variant="label1" color="#878787" top={20} bottom={8}>
-                    Confirm password
-                </Text>
-                <ControlledTextInput
-                    name="confirm-password"
-                    control={control}
-                    placeholder="Confirm password"
-                    secureTextEntry
-                    variant="primary"
-                />
+                <KeyboardAvoidingView>
+                    <Text accessibilityLabel="Username" align="center" variant="label1" color="#878787" bottom={8}>
+                        Username
+                    </Text>
+                    <ControlledTextInput
+                        name="username"
+                        placeholder="user1234"
+                        autoCapitalize="none"
+                        control={control}
+                        variant="primary"
+                    />
+                    <Text
+                        accessibilityLabel="Email"
+                        align="center"
+                        variant="label1"
+                        color="#878787"
+                        top={20}
+                        bottom={8}
+                    >
+                        Email
+                    </Text>
+                    <ControlledTextInput
+                        name="email"
+                        control={control}
+                        placeholder="abc@gmail.com"
+                        autoCapitalize="none"
+                        variant="primary"
+                    />
+                    <Text
+                        accessibilityLabel="Password"
+                        align="center"
+                        variant="label1"
+                        color="#878787"
+                        top={20}
+                        bottom={8}
+                    >
+                        Password
+                    </Text>
+                    <ControlledTextInput
+                        name="password"
+                        placeholder="Your password"
+                        secureTextEntry
+                        control={control}
+                        variant="primary"
+                    />
+                    <Text
+                        accessibilityLabel="Password"
+                        align="center"
+                        variant="label1"
+                        color="#878787"
+                        top={20}
+                        bottom={8}
+                    >
+                        Confirm password
+                    </Text>
+                    <ControlledTextInput
+                        name="confirmPassword"
+                        control={control}
+                        placeholder="Confirm password"
+                        secureTextEntry
+                        variant="primary"
+                    />
+                </KeyboardAvoidingView>
                 <Button
                     variant="primary"
                     size="large"

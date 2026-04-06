@@ -3,9 +3,12 @@ import { useEffect } from "react";
 import { ActivityIndicator, StatusBar, StyleSheet, View } from "react-native";
 import "react-native-reanimated";
 import "react-native-url-polyfill/auto";
+import { Provider } from "react-redux";
 
+import { initAuth } from "@/api/apiConfig";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useAuth } from "@/hooks/useAuth";
+import store from "@/store/store";
 import { DarkTheme } from "@/theme";
 import { ThemeProvider } from "@react-navigation/native";
 
@@ -30,9 +33,13 @@ export default function RootLayout() {
         }
 
         if (session && inAuthGroup) {
-            router.replace("/explore");
+            router.replace("/");
         }
     }, [session, loading, segments]);
+
+    useEffect(() => {
+        initAuth();
+    }, []);
 
     // return <Stack />;
     if (loading) {
@@ -44,22 +51,24 @@ export default function RootLayout() {
     }
 
     return (
-        <ThemeProvider
-            // value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-            value={DarkTheme}
-        >
-            <Stack
-                screenOptions={{
-                    headerShown: false,
-                    contentStyle: styles.container,
-                }}
+        <Provider store={store}>
+            <ThemeProvider
+                // value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+                value={DarkTheme}
             >
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
-            </Stack>
-            <StatusBar />
-        </ThemeProvider>
+                <Stack
+                    screenOptions={{
+                        headerShown: false,
+                        contentStyle: styles.container,
+                    }}
+                >
+                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                    <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
+                </Stack>
+                <StatusBar />
+            </ThemeProvider>
+        </Provider>
     );
 }
 
