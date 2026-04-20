@@ -1,19 +1,55 @@
-import { Link } from "expo-router";
-import { Image, Platform, StyleSheet, View } from "react-native";
+import { Image, Modal, StyleSheet, View } from "react-native";
 
-import { signOut } from "@/api/auth";
+import { createSpace, getSpaces, joinSpace } from "@/api/space";
 import { HelloWave } from "@/components/hello-wave";
 import ParallaxScrollView from "@/components/parallax-scroll-view";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { Button, Text } from "@/components/ui";
-import { useSelector } from "react-redux";
+import { Button, Text, TextInput } from "@/components/ui";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function HomeScreen() {
     const { user } = useSelector((state: any) => state.user);
-    const handleLogout = async () => {
-        await signOut();
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const { spaces } = useSelector((state: any) => state.space);
+
+    const [modalCreate, setModalCreate] = useState(false);
+    const [modalJoin, setModalJoin] = useState(false);
+    const [spaceName, setSpaceName] = useState("");
+    const [inviteCode, setInviteCode] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleCreateSpace = async () => {
+        // Implementation for creating space
+        const res = await createSpace(spaceName);
+        setModalCreate(false);
     };
+
+    const handleJoinSpace = async () => {
+        const res = await joinSpace(inviteCode);
+        console.log(res);
+        if (res.status === 201) {
+            dispatch({ type: "space/addSpace", payload: res.data });
+        }
+        setModalJoin(false);
+    };
+
+    const fetchSpaces = async () => {
+        // Implementation for fetching spaces
+
+        const { status, data } = await getSpaces();
+        if (status === 200) {
+            dispatch({ type: "space/setSpaces", payload: data });
+            console.log(data);
+        }
+    };
+
+    useEffect(() => {
+        fetchSpaces();
+    }, []);
 
     return (
         <ParallaxScrollView
@@ -42,62 +78,69 @@ export default function HomeScreen() {
                 <HelloWave />
             </ThemedView>
             <View>
-                <Button variant="text" onPress={handleLogout}>
-                    Logout
-                </Button>
-            </View>
-            <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-                <ThemedText>
-                    Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes. Press{" "}
-                    <ThemedText type="defaultSemiBold">
-                        {Platform.select({
-                            ios: "cmd + d",
-                            android: "cmd + m",
-                            web: "F12",
-                        })}
-                    </ThemedText>{" "}
-                    to open developer tools.
-                </ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.stepContainer}>
-                <Link href="/modal">
-                    <Link.Trigger>
-                        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-                    </Link.Trigger>
-                    <Link.Preview />
-                    <Link.Menu>
-                        <Link.MenuAction title="Action" icon="cube" onPress={() => alert("Action pressed")} />
-                        <Link.MenuAction
-                            title="Share"
-                            icon="square.and.arrow.up"
-                            onPress={() => alert("Share pressed")}
-                        />
-                        <Link.Menu title="More" icon="ellipsis">
-                            <Link.MenuAction
-                                title="Delete"
-                                icon="trash"
-                                destructive
-                                onPress={() => alert("Delete pressed")}
+                <Button onPress={() => setModalCreate(true)}>Create space</Button>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalCreate}
+                    onRequestClose={() => {
+                        // Alert.alert("Modal has been closed.");
+                        setModalCreate(!modalCreate);
+                    }}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <TextInput
+                                style={{ backgroundColor: "transparent", marginBottom: 20 }}
+                                variant="primary"
+                                onChangeText={setSpaceName}
+                                value={spaceName}
+                                placeholder="Enter space name"
                             />
-                        </Link.Menu>
-                    </Link.Menu>
-                </Link>
-
-                <ThemedText>
-                    {`Tap the Explore tab to learn more about what's included in this starter app.`}
+                            <Button onPress={() => setModalCreate(false)}>Close</Button>
+                            <Button onPress={handleCreateSpace}>Create</Button>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+            <View>
+                <Button onPress={() => setModalJoin(true)}>Join space</Button>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalJoin}
+                    onRequestClose={() => {
+                        // Alert.alert("Modal has been closed.");
+                        setModalJoin(!modalJoin);
+                    }}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <TextInput
+                                style={{ backgroundColor: "transparent", marginBottom: 20 }}
+                                variant="primary"
+                                onChangeText={setInviteCode}
+                                value={inviteCode}
+                                placeholder="Enter invite code"
+                            />
+                            <Button onPress={() => setModalJoin(false)}>Close</Button>
+                            <Button onPress={handleJoinSpace}>Join</Button>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+            <View>
+                <ThemedText type="title" style={{ marginBlock: 10 }}>
+                    Space List
                 </ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-                <ThemedText>
-                    {`When you're ready, run `}
-                    <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{" "}
-                    <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{" "}
-                    <ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
-                    <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-                </ThemedText>
-            </ThemedView>
+                {spaces?.map((space: any) => (
+                    <View key={space.id}>
+                        <Button size="small" onPress={() => router.replace(`/space/${space.id}`)}>
+                            {space.name}
+                        </Button>
+                    </View>
+                ))}
+            </View>
         </ParallaxScrollView>
     );
 }
@@ -116,5 +159,45 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 25,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    },
+    buttonOpen: {
+        backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center",
     },
 });

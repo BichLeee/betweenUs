@@ -9,8 +9,7 @@ import { initAuth } from "@/api/apiConfig";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useAuth } from "@/hooks/useAuth";
 import store from "@/store/store";
-import { DarkTheme } from "@/theme";
-import { ThemeProvider } from "@react-navigation/native";
+import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 
 export const unstable_settings = {
     anchor: "(tabs)",
@@ -54,7 +53,7 @@ export default function RootLayout() {
         <Provider store={store}>
             <ThemeProvider
                 // value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-                value={DarkTheme}
+                value={DefaultTheme}
             >
                 <Stack
                     screenOptions={{
@@ -65,6 +64,7 @@ export default function RootLayout() {
                     <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                     <Stack.Screen name="(auth)" options={{ headerShown: false }} />
                     <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
+                    <Stack.Screen name="space" options={{ headerShown: false }} />
                 </Stack>
                 <StatusBar />
             </ThemeProvider>

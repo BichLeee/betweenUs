@@ -103,7 +103,8 @@ const createStyles = (theme: Theme) =>
             borderRadius: 100,
         },
         default1: {
-            backgroundColor: "#f0f0f0",
+            backgroundColor: "#fff",
+            color: "#000",
         },
         default2: {
             backgroundColor: "#e0e0e0",
