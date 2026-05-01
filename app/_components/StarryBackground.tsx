@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
 
@@ -19,8 +20,8 @@ const stars: StarType[] = Array.from({ length: STAR_COUNT }).map(() => ({
     y: Math.random() * height,
     opacity: Math.random(),
     size: Math.random() * 2 + 1,
-    dx: (Math.random() - 0.5) * 30, // movement range
-    dy: (Math.random() - 0.5) * 30,
+    dx: (Math.random() - 0.5) * 300, // movement range
+    dy: (Math.random() - 0.5) * 300,
 }));
 
 export default function StarryBackground() {
@@ -36,15 +37,18 @@ export default function StarryBackground() {
 function Star({ star }: { star: StarType }) {
     const progress = useSharedValue(0);
 
-    // animate forever
-    progress.value = withRepeat(withTiming(1, { duration: 10000 + Math.random() * 5000 }), -1, true);
+    useEffect(() => {
+        progress.value = withRepeat(
+            withTiming(1, { duration: 12000 }), // we’ll tune this
+            -1,
+            true,
+        );
+    }, []);
 
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ translateX: star.dx * progress.value }, { translateY: star.dy * progress.value }],
-            opacity: star.opacity,
-        };
-    });
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: star.dx * progress.value }, { translateY: star.dy * progress.value }],
+        opacity: star.opacity,
+    }));
 
     return (
         <Animated.View

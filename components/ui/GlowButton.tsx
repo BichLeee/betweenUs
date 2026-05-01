@@ -25,7 +25,7 @@ const Label = styled(Text, {
     fontWeight: "600",
 });
 
-export function GlowButton({ children }) {
+export function GlowButton({ children, onPress }) {
     const rotate = useSharedValue(0);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ export function GlowButton({ children }) {
     }));
 
     return (
-        <Container>
+        <Container onPress={onPress}>
             {/* Animated border */}
             <AnimatedGradient
                 colors={["transparent", "white", "transparent", "transparent"]}

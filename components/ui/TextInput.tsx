@@ -10,8 +10,8 @@ export const TextInput = styled(InputTM, {
     variants: {
         variant: {
             primary: {
-                fontSize: 16,
-                lineHeight: 20,
+                fontSize: 14,
+                lineHeight: 18,
                 backgroundColor: "rgba(0,0,0,0.2)",
                 borderRadius: 50,
                 textAlign: "center",

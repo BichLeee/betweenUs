@@ -1,12 +1,12 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
 import { signIn } from "@/api/auth";
-import { Button, GlowButton, Text, TextInput } from "@/components/ui";
+import { Button, Text, TextInput } from "@/components/ui";
 import { StyleSheet } from "react-native";
-import { View, XStack } from "tamagui";
+import { View, XStack, YStack } from "tamagui";
 
 type FormValues = {
     email: string;
@@ -51,43 +51,54 @@ export default function LoginScreen() {
             <Text variant="header1" textAlign="center">
                 BetweenUs
             </Text>
-            <View>
-                <TextInput
-                    placeholder="Email"
-                    autoCapitalize="none"
+            <YStack gap={28} alignItems="center">
+                <Controller
                     name="email"
                     control={control}
-                    variant="primary"
-                    height={50}
+                    render={({ field }) => (
+                        <TextInput
+                            placeholder="Email"
+                            autoCapitalize="none"
+                            variant="primary"
+                            width={320}
+                            height={44}
+                            {...field}
+                        />
+                    )}
                 />
-                <TextInput
-                    placeholder="Password"
-                    secureTextEntry
+                <Controller
                     name="password"
                     control={control}
-                    variant="primary"
-                    style={{ marginTop: 24 }}
-                    height={50}
-                    mb={40}
+                    render={({ field }) => (
+                        <TextInput
+                            placeholder="Password"
+                            secureTextEntry
+                            variant="primary"
+                            height={44}
+                            width={320}
+                            {...field}
+                        />
+                    )}
                 />
-                <GlowButton onPress={handleSubmit(onSubmit)}>Sign in</GlowButton>
-            </View>
+                {/* <GlowButton onPress={handleSubmit(onSubmit)}>Sign in</GlowButton> */}
+                <Button
+                    marginBlockStart={50}
+                    width={180}
+                    height={50}
+                    borderRadius={100}
+                    onPress={handleSubmit(onSubmit)}
+                >
+                    Sign in
+                </Button>
+            </YStack>
             <View>
                 <Text textAlign="center" color="#b4b4b4">
                     Or sign in with
                 </Text>
-                <View
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        gap: 12,
-                        marginTop: 20,
-                    }}
-                >
+                <XStack gap={12} top={20} justifyContent="center">
                     <FontAwesome name="google" size={24} color="#fff" style={styles.icon} />
                     <FontAwesome name="apple" size={24} color="#fff" style={styles.icon} />
-                </View>
+                </XStack>
             </View>
         </View>
     );
