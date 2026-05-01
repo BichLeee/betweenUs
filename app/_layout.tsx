@@ -1,15 +1,16 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, StatusBar, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StatusBar, StyleSheet } from "react-native";
 import "react-native-reanimated";
 import "react-native-url-polyfill/auto";
 import { Provider } from "react-redux";
+import { TamaguiProvider, View } from "tamagui";
 
 import { initAuth } from "@/api/apiConfig";
-import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useAuth } from "@/hooks/useAuth";
 import store from "@/store/store";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import config from "../tamagui.config";
 
 export const unstable_settings = {
     anchor: "(tabs)",
@@ -19,8 +20,6 @@ export default function RootLayout() {
     const router = useRouter();
     const segments = useSegments();
     const { session, loading } = useAuth();
-
-    const colorScheme = useColorScheme();
 
     useEffect(() => {
         if (loading) return;
@@ -40,35 +39,34 @@ export default function RootLayout() {
         initAuth();
     }, []);
 
-    // return <Stack />;
-    if (loading) {
-        return (
-            <View style={{ flex: 1, justifyContent: "center" }}>
-                <ActivityIndicator />
-            </View>
-        );
-    }
-
     return (
-        <Provider store={store}>
-            <ThemeProvider
-                // value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-                value={DefaultTheme}
-            >
-                <Stack
-                    screenOptions={{
-                        headerShown: false,
-                        contentStyle: styles.container,
-                    }}
-                >
-                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                    <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
-                    <Stack.Screen name="space" options={{ headerShown: false }} />
-                </Stack>
-                <StatusBar />
-            </ThemeProvider>
-        </Provider>
+        <TamaguiProvider config={config} defaultTheme="dark">
+            {loading ? (
+                <View style={{ flex: 1, justifyContent: "center" }}>
+                    <ActivityIndicator />
+                </View>
+            ) : (
+                <Provider store={store}>
+                    <ThemeProvider
+                        // value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+                        value={DefaultTheme}
+                    >
+                        <Stack
+                            screenOptions={{
+                                headerShown: false,
+                                contentStyle: styles.container,
+                            }}
+                        >
+                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                            <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
+                            <Stack.Screen name="space/[spaceId]" options={{ headerShown: false }} />
+                        </Stack>
+                        <StatusBar />
+                    </ThemeProvider>
+                </Provider>
+            )}
+        </TamaguiProvider>
     );
 }
 

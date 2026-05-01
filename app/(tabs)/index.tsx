@@ -1,14 +1,13 @@
-import { Image, Modal, StyleSheet, View } from "react-native";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { Image, Modal, StyleSheet } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { View } from "tamagui";
 
 import { createSpace, getSpaces, joinSpace } from "@/api/space";
 import { HelloWave } from "@/components/hello-wave";
 import ParallaxScrollView from "@/components/parallax-scroll-view";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
 import { Button, Text, TextInput } from "@/components/ui";
-import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function HomeScreen() {
     const { user } = useSelector((state: any) => state.user);
@@ -73,10 +72,10 @@ export default function HomeScreen() {
                 </View>
             }
         >
-            <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Welcome!</ThemedText>
+            <View style={styles.titleContainer}>
+                <Text>Welcome!</Text>
                 <HelloWave />
-            </ThemedView>
+            </View>
             <View>
                 <Button onPress={() => setModalCreate(true)}>Create space</Button>
                 <Modal
@@ -130,9 +129,7 @@ export default function HomeScreen() {
                 </Modal>
             </View>
             <View>
-                <ThemedText type="title" style={{ marginBlock: 10 }}>
-                    Space List
-                </ThemedText>
+                <Text style={{ marginBlock: 10 }}>Space List</Text>
                 {spaces?.map((space: any) => (
                     <View key={space.id}>
                         <Button size="small" onPress={() => router.replace(`/space/${space.id}`)}>

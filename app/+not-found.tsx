@@ -1,10 +1,10 @@
-import { ThemedView } from "@/components/themed-view";
 import { Text } from "@/components/ui";
+import { View } from "tamagui";
 
 export default function ModalScreen() {
     return (
-        <ThemedView>
+        <View>
             <Text>not found</Text>
-        </ThemedView>
+        </View>
     );
 }
