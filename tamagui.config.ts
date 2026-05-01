@@ -7,7 +7,7 @@ const config = createTamagui({
         ...baseConfig.themes,
         dark: {
             ...baseConfig.themes.dark,
-            background: "#000",
+            background: "transparent",
             backgroundHover: "#111",
             backgroundPress: "#222",
             backgroundFocus: "#333",

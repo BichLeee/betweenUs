@@ -9,8 +9,8 @@ import { TamaguiProvider, View } from "tamagui";
 import { initAuth } from "@/api/apiConfig";
 import { useAuth } from "@/hooks/useAuth";
 import store from "@/store/store";
-import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import config from "../tamagui.config";
+import StarryBackground from "./_components/StarryBackground";
 
 export const unstable_settings = {
     anchor: "(tabs)",
@@ -41,29 +41,25 @@ export default function RootLayout() {
 
     return (
         <TamaguiProvider config={config} defaultTheme="dark">
+            <StarryBackground />
             {loading ? (
                 <View style={{ flex: 1, justifyContent: "center" }}>
                     <ActivityIndicator />
                 </View>
             ) : (
                 <Provider store={store}>
-                    <ThemeProvider
-                        // value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-                        value={DefaultTheme}
+                    <Stack
+                        screenOptions={{
+                            headerShown: false,
+                            contentStyle: styles.container,
+                        }}
                     >
-                        <Stack
-                            screenOptions={{
-                                headerShown: false,
-                                contentStyle: styles.container,
-                            }}
-                        >
-                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                            <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
-                            <Stack.Screen name="space/[spaceId]" options={{ headerShown: false }} />
-                        </Stack>
-                        <StatusBar />
-                    </ThemeProvider>
+                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                        <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
+                        <Stack.Screen name="space/[spaceId]" options={{ headerShown: false }} />
+                    </Stack>
+                    <StatusBar />
                 </Provider>
             )}
         </TamaguiProvider>
@@ -73,5 +69,6 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
     container: {
         paddingTop: 50,
+        backgroundColor: "transparent",
     },
 });

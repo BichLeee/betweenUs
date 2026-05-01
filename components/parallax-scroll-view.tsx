@@ -7,12 +7,9 @@ const HEADER_HEIGHT = 250;
 
 type Props = PropsWithChildren<{
     headerImage: ReactElement;
-    headerBackgroundColor: { dark: string; light: string };
 }>;
 
-export default function ParallaxScrollView({ children, headerImage, headerBackgroundColor }: Props) {
-    // const backgroundColor = useThemeColor({}, "background");
-    // const colorScheme = useColorScheme() ?? "light";
+export default function ParallaxScrollView({ children, headerImage }: Props) {
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
     const scrollOffset = useScrollOffset(scrollRef);
     const headerAnimatedStyle = useAnimatedStyle(() => {

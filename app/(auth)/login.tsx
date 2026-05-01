@@ -1,13 +1,12 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Octicons from "@expo/vector-icons/Octicons";
 import { useRouter } from "expo-router";
-import { StyleSheet, View } from "react-native";
-
-import { signIn } from "@/api/auth";
-import { Button, ControlledTextInput, Text } from "@/components/ui";
-import { IconSymbol } from "@/components/ui/icon-symbol.ios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+
+import { signIn } from "@/api/auth";
+import { Button, GlowButton, Text, TextInput } from "@/components/ui";
+import { StyleSheet } from "react-native";
+import { View, XStack } from "tamagui";
 
 type FormValues = {
     email: string;
@@ -30,76 +29,61 @@ export default function LoginScreen() {
     return (
         <View
             style={{
-                padding: 20,
+                paddingInline: 20,
                 display: "flex",
                 justifyContent: "space-between",
                 height: "100%",
                 paddingBottom: 60,
+                backgroundSize: "cover",
             }}
         >
-            <View
-                style={{
-                    display: "flex",
-                    alignItems: "flex-end",
-                    padding: 10,
-                }}
-            >
+            <XStack justifyContent="flex-end">
                 <Button
                     variant="text"
                     onPress={() => router.replace("/signup")}
+                    size="$3"
                     // icon={<FontAwesome name="user-circle" size={24} color="#fff" />}
-                    icon={<IconSymbol name="person.circle" color="#fff" size={30} />}
+                    // icon={<IconSymbol name="person.circle" color="#fff" size={30} />}
                 >
                     Sign Up
                 </Button>
-            </View>
-            <Text variant="header1" align="center">
-                Sign in
+            </XStack>
+            <Text variant="header1" textAlign="center">
+                BetweenUs
             </Text>
             <View>
-                <Text accessibilityLabel="Email" align="center" variant="label1" color="#878787" bottom={12}>
-                    Email
-                </Text>
-                <ControlledTextInput
+                <TextInput
                     placeholder="Email"
                     autoCapitalize="none"
                     name="email"
                     control={control}
                     variant="primary"
+                    height={50}
                 />
-                <Text
-                    accessibilityLabel="Password"
-                    align="center"
-                    variant="label1"
-                    color="#878787"
-                    top={40}
-                    bottom={12}
-                >
-                    Password
-                </Text>
-                <ControlledTextInput
+                <TextInput
                     placeholder="Password"
                     secureTextEntry
                     name="password"
                     control={control}
                     variant="primary"
+                    style={{ marginTop: 24 }}
+                    height={50}
+                    mb={40}
                 />
-                <Button
-                    variant="primary"
-                    size="large"
-                    onPress={handleSubmit(onSubmit)}
-                    icon={<Octicons name="sign-in" size={24} color="#fff" />}
-                    style={{ marginTop: 50 }}
-                >
-                    Sign in
-                </Button>
+                <GlowButton onPress={handleSubmit(onSubmit)}>Sign in</GlowButton>
             </View>
             <View>
-                <Text align="center" color="#b4b4b4">
+                <Text textAlign="center" color="#b4b4b4">
                     Or sign in with
                 </Text>
                 <View
-                    style={{ display: "flex", flexDirection: "row", justifyContent: "center", gap: 12, marginTop: 20 }}
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        gap: 12,
+                        marginTop: 20,
+                    }}
                 >
                     <FontAwesome name="google" size={24} color="#fff" style={styles.icon} />
                     <FontAwesome name="apple" size={24} color="#fff" style={styles.icon} />

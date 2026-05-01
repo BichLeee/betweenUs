@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { View } from "tamagui";
 
 import { createSpace, getSpaces, joinSpace } from "@/api/space";
-import { HelloWave } from "@/components/hello-wave";
 import ParallaxScrollView from "@/components/parallax-scroll-view";
 import { Button, Text, TextInput } from "@/components/ui";
 
@@ -52,7 +51,6 @@ export default function HomeScreen() {
 
     return (
         <ParallaxScrollView
-            headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
             headerImage={
                 <View
                     style={{
@@ -74,7 +72,6 @@ export default function HomeScreen() {
         >
             <View style={styles.titleContainer}>
                 <Text>Welcome!</Text>
-                <HelloWave />
             </View>
             <View>
                 <Button onPress={() => setModalCreate(true)}>Create space</Button>
