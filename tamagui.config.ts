@@ -21,6 +21,7 @@ const config = createTamagui({
             borderColorFocus: "#777",
             borderColorPress: "#888",
             placeholderColor: "#999",
+            primary: "#0898ae",
         },
         light: {
             ...baseConfig.themes.light,
@@ -38,6 +39,7 @@ const config = createTamagui({
             borderColorFocus: "#666",
             borderColorPress: "#777",
             placeholderColor: "#888",
+            primary: "#0898ae",
         },
     },
 });

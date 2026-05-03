@@ -1,12 +1,12 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
+import { useTheme, View, XStack, YStack } from "tamagui";
 
 import { signIn } from "@/api/auth";
 import { Button, Text, TextInput } from "@/components/ui";
-import { StyleSheet } from "react-native";
-import { View, XStack, YStack } from "tamagui";
 
 type FormValues = {
     email: string;
@@ -15,6 +15,7 @@ type FormValues = {
 
 export default function LoginScreen() {
     const { control, handleSubmit } = useForm();
+    const theme = useTheme();
 
     const router = useRouter();
     const dispatch = useDispatch();
@@ -38,20 +39,33 @@ export default function LoginScreen() {
             }}
         >
             <XStack justifyContent="flex-end">
-                <Button
-                    variant="text"
-                    onPress={() => router.replace("/signup")}
-                    size="$3"
-                    // icon={<FontAwesome name="user-circle" size={24} color="#fff" />}
-                    // icon={<IconSymbol name="person.circle" color="#fff" size={30} />}
-                >
+                <Button variant="text" onPress={() => router.replace("/signup")} size="$3">
                     Sign Up
                 </Button>
             </XStack>
-            <Text variant="header1" textAlign="center">
-                BetweenUs
-            </Text>
-            <YStack gap={28} alignItems="center">
+            <YStack
+                alignItems="center"
+                justifyContent="center"
+                style={{
+                    backdropFilter: "blur(25px)",
+                    paddingBlock: 50,
+                    paddingInline: 32,
+                    borderRadius: 24,
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    borderWidth: 1,
+                    // borderColor: "rgba(255,255,255,0.08)",
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 20 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 30,
+                }}
+            >
+                <Text variant="header1" textAlign="center" marginBlockEnd={10} letterSpacing={1.2}>
+                    BetweenUs
+                </Text>
+                <Text fontSize={13} color="#aaa" marginBottom={60}>
+                    Connect beyond the stars
+                </Text>
                 <Controller
                     name="email"
                     control={control}
@@ -60,8 +74,9 @@ export default function LoginScreen() {
                             placeholder="Email"
                             autoCapitalize="none"
                             variant="primary"
-                            width={320}
                             height={44}
+                            marginBlockEnd={20}
+                            style={{ width: "100%" }}
                             {...field}
                         />
                     )}
@@ -75,18 +90,29 @@ export default function LoginScreen() {
                             secureTextEntry
                             variant="primary"
                             height={44}
-                            width={320}
+                            style={{ width: "100%" }}
                             {...field}
                         />
                     )}
                 />
-                {/* <GlowButton onPress={handleSubmit(onSubmit)}>Sign in</GlowButton> */}
+                <XStack width={280} justifyContent="flex-end">
+                    <Text fontSize={12} color="#aaa" marginTop={20}>
+                        Forgot password?
+                    </Text>
+                </XStack>
                 <Button
-                    marginBlockStart={50}
-                    width={180}
+                    marginBlockStart={40}
                     height={50}
                     borderRadius={100}
                     onPress={handleSubmit(onSubmit)}
+                    style={{
+                        backgroundColor: theme.primary.val,
+                        shadowColor: theme.primary.val,
+                        shadowOffset: { width: 0, height: 6 },
+                        shadowOpacity: 0.6,
+                        shadowRadius: 20,
+                        width: "100%",
+                    }}
                 >
                     Sign in
                 </Button>
@@ -95,9 +121,13 @@ export default function LoginScreen() {
                 <Text textAlign="center" color="#b4b4b4">
                     Or sign in with
                 </Text>
-                <XStack gap={12} top={20} justifyContent="center">
-                    <FontAwesome name="google" size={24} color="#fff" style={styles.icon} />
-                    <FontAwesome name="apple" size={24} color="#fff" style={styles.icon} />
+                <XStack gap={16} top={20} justifyContent="center">
+                    <View style={styles.icon}>
+                        <FontAwesome name="google" size={20} color="#fff" />
+                    </View>
+                    <View style={styles.icon}>
+                        <FontAwesome name="apple" size={20} color="#fff" />
+                    </View>
                 </XStack>
             </View>
         </View>
@@ -107,10 +137,11 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
     icon: {
         padding: 12,
-        backgroundColor: "#3d3d3d",
+        backgroundColor: "rgba(255,255,255,0.08)",
         borderRadius: 24,
-        width: 48,
-        height: 48,
-        textAlign: "center",
+        width: 44,
+        height: 44,
+        alignItems: "center",
+        justifyContent: "center",
     },
 });

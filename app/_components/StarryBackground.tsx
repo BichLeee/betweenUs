@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
+import { useTheme } from "tamagui";
 
 const { width, height } = Dimensions.get("window");
 
@@ -35,11 +36,12 @@ export default function StarryBackground() {
 }
 
 function Star({ star }: { star: StarType }) {
+    const theme = useTheme();
     const progress = useSharedValue(0);
 
     useEffect(() => {
         progress.value = withRepeat(
-            withTiming(1, { duration: 12000 }), // we’ll tune this
+            withTiming(1, { duration: 20000 }), // we’ll tune this
             -1,
             true,
         );
@@ -59,6 +61,7 @@ function Star({ star }: { star: StarType }) {
                     height: star.size,
                     top: star.y,
                     left: star.x,
+                    backgroundColor: theme.primary.val,
                 },
                 animatedStyle,
             ]}
@@ -74,7 +77,6 @@ const styles = StyleSheet.create({
     },
     star: {
         position: "absolute",
-        backgroundColor: "#fff",
         borderRadius: 2,
     },
 });
