@@ -22,8 +22,9 @@ export const Button = styled(ButtonTM, {
                 // borderColor: theme.colors.primary,
             },
             text: {
-                backgroundColor: "transparent",
+                backgroundColor: "#000",
                 borderWidth: 0,
+                chromeless: true,
             },
             icon: {
                 flexDirection: "row",
@@ -38,6 +39,11 @@ export const Button = styled(ButtonTM, {
             },
             default2: {
                 backgroundColor: "#e0e0e0",
+            },
+        },
+        rounded: {
+            true: {
+                borderRadius: 100,
             },
         },
     } as const,

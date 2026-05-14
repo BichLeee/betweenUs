@@ -6,27 +6,34 @@ export const Text = styled(SizableText, {
         variant: {
             header1: {
                 fontSize: 36,
-                fontWeight: "600",
                 lineHeight: 42,
             },
             header2: {
                 fontSize: 28,
-                fontWeight: "600",
                 lineHeight: 34,
             },
             body1: {
                 fontSize: 14,
-                fontWeight: "400",
+                lineHeight: 18,
+            },
+            body2: {
+                fontSize: 12,
+                lineHeight: 16,
+            },
+            body3: {
+                fontSize: 16,
                 lineHeight: 20,
             },
             label1: {
                 fontSize: 20,
-                fontWeight: "400",
                 lineHeight: 24,
+            },
+            label2: {
+                fontSize: 24,
+                lineHeight: 28,
             },
             caption: {
                 fontSize: 12,
-                fontWeight: "400",
                 color: "#666",
             },
         },

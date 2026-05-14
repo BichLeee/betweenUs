@@ -91,7 +91,6 @@ api.interceptors.response.use(
     },
 );
 
-export const initAuth = async () => {
-    const { data } = await supabase.auth.getSession();
-    accessToken = data.session?.access_token || null;
+export const initAuth = async (access_token: string | null) => {
+    accessToken = access_token;
 };

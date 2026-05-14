@@ -18,7 +18,14 @@ export const TextInput = styled(InputTM, {
                     backgroundColor: "rgba(255,255,255,0.1)",
                 },
             },
-            default: {},
+            default: {
+                borderWidth: 1,
+                borderColor: "$borderColor",
+                borderRadius: 20,
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+                textAlign: "center",
+            },
         },
     } as const,
 });

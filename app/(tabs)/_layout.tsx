@@ -12,17 +12,21 @@ const CustomTabBar = ({ state, navigation }: any) => {
     const [modalCreate, setModalCreate] = useState(false);
 
     const tabList = [
-        { icon: "house", onPress: () => navigation.navigate(state.routeNames[0]) },
-        { icon: "plus", onPress: () => setModalCreate(true) },
-        { icon: "person", onPress: () => navigation.navigate(state.routeNames[1]) },
+        { index: 0, icon: "house", onPress: () => navigation.navigate(state.routeNames[0]) },
+        { icon: "plus", onPress: () => navigation.navigate("create-space") },
+        { index: 1, icon: "person", onPress: () => navigation.navigate(state.routeNames[1]) },
     ];
 
     return (
         <View style={styles.wrapper}>
-            <XStack style={styles.container} alignItems="center" justifyContent="space-between">
-                {tabList.map((tab, index) => {
-                    const isFocused = state.index === index;
-
+            <XStack
+                style={styles.container}
+                borderColor="$borderColor"
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                {tabList.map((tab: any, index: number) => {
+                    const isFocused = tab.index === state.index;
                     return (
                         <View
                             key={index}
@@ -46,10 +50,12 @@ export default function TabLayout() {
                 screenOptions={{
                     headerShown: false,
                     tabBarStyle: { display: "none" },
+                    animation: "shift",
                 }}
                 tabBar={(props) => <CustomTabBar {...props} />}
             >
                 <Tabs.Screen name="index" options={{ title: "Home", sceneStyle: { backgroundColor: "transparent" } }} />
+                <Tabs.Screen name="create-space" />
                 <Tabs.Screen
                     name="explore"
                     options={{ title: "Profile", sceneStyle: { backgroundColor: "transparent" } }}
@@ -60,25 +66,6 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
-    // container: {
-    //     height: 60,
-    //     borderWidth: 1,
-    //     borderRadius: 100,
-    //     alignSelf: "center",
-    //     backgroundColor: "rgba(255, 255, 255, 0.05)",
-    //     borderColor: "rgba(255,255,255,0.08)",
-    //     shadowColor: "#fff",
-    //     shadowOffset: { width: 0, height: 20 },
-    //     shadowOpacity: 0.25,
-    //     shadowRadius: 30,
-    //     display: "flex",
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     position: "absolute",
-    //     bottom: 20,
-    //     zIndex: 10,
-    // },
-
     wrapper: {
         position: "absolute",
         bottom: 30,
@@ -88,7 +75,6 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        flexDirection: "row",
         height: 60,
         borderRadius: 30,
         padding: 12,
@@ -97,7 +83,6 @@ const styles = StyleSheet.create({
         // glass effect
         backgroundColor: "rgba(255,255,255,0.08)",
         borderWidth: 1,
-        borderColor: "rgba(255,255,255,0.1)",
 
         // iOS shadow
         shadowColor: "#000",

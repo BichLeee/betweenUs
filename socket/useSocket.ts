@@ -28,6 +28,10 @@ export const useSocket = (spaceId: string, handlers?: any) => {
             socket.on("line_created", handlers.onLineCreated);
         }
 
+        if (handlers?.onLineDeleted) {
+            socket.on("line_deleted", handlers.onLineDeleted);
+        }
+
         return () => {
             socket.emit("leave_note", { spaceId });
             socket.off("line_locked", handlers?.onLocked);
@@ -35,6 +39,7 @@ export const useSocket = (spaceId: string, handlers?: any) => {
             socket.off("line_updated", handlers?.onUpdated);
             socket.off("lock_failed", handlers?.onLockFailed);
             socket.off("line_created", handlers?.onLineCreated);
+            socket.off("line_deleted", handlers?.onLineDeleted);
         };
     }, [spaceId]);
 };
